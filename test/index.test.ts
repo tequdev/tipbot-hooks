@@ -199,13 +199,11 @@ describe('tipbot', () => {
     })
   }
 
-  it('', async () => {
+  it('Native Amount', async () => {
     // deposit
     {
       const response = await deposit(testContext.alice, 1, xahToDrops('100'))
       expect(response.meta).toHaveProperty('HookExecutions')
-      // console.log(response.meta.HookExecutions[0].HookExecution)
-      // console.log(JSON.stringify(response.meta.AffectedNodes, null, 2))
     }
 
     // tip to user 1
@@ -222,9 +220,6 @@ describe('tipbot', () => {
       for (const acc of [testContext.hook2, testContext.hook3]) {
         const response = await tip(acc, opinions)
         expect(response.meta).toHaveProperty('HookExecutions')
-        // console.log(response.HookParameters[0].HookParameter)
-        // console.log(response.meta.HookExecutions[0].HookExecution)
-        // console.log(JSON.stringify(response.meta.AffectedNodes, null, 2))
       }
     }
     // tip to bob
@@ -241,9 +236,6 @@ describe('tipbot', () => {
       for (const acc of [testContext.hook2, testContext.hook3]) {
         const response = await tip(acc, opinions)
         expect(response.meta).toHaveProperty('HookExecutions')
-        // console.log(response.HookParameters[0].HookParameter)
-        // console.log(response.meta.HookExecutions[0].HookExecution)
-        // console.log(JSON.stringify(response.meta.AffectedNodes, null, 2))
       }
     }
 
@@ -251,8 +243,61 @@ describe('tipbot', () => {
     {
       const response = await withdraw(testContext.bob, xahToDrops('0.01'))
       expect(response.meta).toHaveProperty('HookExecutions')
-      // console.log(response.meta.HookExecutions[0].HookExecution)
-      // console.log(JSON.stringify(response.meta.AffectedNodes, null, 2))
+    }
+  })
+
+  it('IOU Amount', async () => {
+    const ic = testContext.ic
+    // deposit
+    {
+      const response = await deposit(
+        testContext.alice,
+        1,
+        ic.set(100).amount as unknown as Amount,
+      )
+      expect(response.meta).toHaveProperty('HookExecutions')
+    }
+
+    // tip to user 1
+    {
+      const opinions: Opinion[] = [
+        {
+          socialNetworkId: 1,
+          postId: 123,
+          userIdTo: 0,
+          userIdFrom: 1,
+          amount: ic.set(50).amount as unknown as Amount,
+        },
+      ]
+      for (const acc of [testContext.hook2, testContext.hook3]) {
+        const response = await tip(acc, opinions)
+        expect(response.meta).toHaveProperty('HookExecutions')
+      }
+    }
+    // tip to bob
+    {
+      const opinions: Opinion[] = [
+        {
+          socialNetworkId: 1,
+          postId: 456,
+          userIdTo: testContext.bob.address,
+          userIdFrom: 1,
+          amount: ic.set(40).amount as unknown as Amount,
+        },
+      ]
+      for (const acc of [testContext.hook2, testContext.hook3]) {
+        const response = await tip(acc, opinions)
+        expect(response.meta).toHaveProperty('HookExecutions')
+      }
+    }
+
+    // withdraw
+    {
+      const response = await withdraw(
+        testContext.bob,
+        ic.set(10).amount as unknown as Amount,
+      )
+      expect(response.meta).toHaveProperty('HookExecutions')
     }
   })
 })
