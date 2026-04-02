@@ -1,0 +1,7 @@
+[tools]
+node = "22"
+python = "3.10"
+# "pipx:xrpld-netgen" = "1"
+# "github:Transia-RnD/xrpld-network-gen" = { version = "main" ,bin_name = "xrpld-netgen"}
+"pipx:git+https://github.com/Transia-RnD/xrpld-network-gen.git" = "main"
+"github:tequdev/hook-cleaner" = { version = "helper-0.1.2", version_prefix = "helper-" }
