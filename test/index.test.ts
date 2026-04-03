@@ -202,7 +202,7 @@ describe('tipbot', () => {
   it('Native Amount', async () => {
     // deposit
     {
-      const response = await deposit(testContext.alice, 0n, xahToDrops('100'))
+      const response = await deposit(testContext.alice, 1n, xahToDrops('100'))
       expect(response.meta).toHaveProperty('HookExecutions')
     }
 
@@ -243,6 +243,7 @@ describe('tipbot', () => {
     {
       const response = await withdraw(testContext.bob, xahToDrops('0.01'))
       expect(response.meta).toHaveProperty('HookExecutions')
+      expect(response.meta).toHaveProperty('HookEmissions')
     }
   })
 
@@ -298,6 +299,7 @@ describe('tipbot', () => {
         ic.set(10).amount as unknown as Amount,
       )
       expect(response.meta).toHaveProperty('HookExecutions')
+      expect(response.meta).toHaveProperty('HookEmissions')
     }
   })
 })
