@@ -29,6 +29,7 @@ import {
 
 import {
   currencyToHex,
+  flipHex,
   xflToHex,
   xrpAddressToHex,
 } from '@transia/binary-models'
@@ -92,7 +93,7 @@ describe('tipbot', () => {
           {
             HookParameter: {
               HookParameterName: convertStringToHex('DEPOSIT'),
-              HookParameterValue: `01${'00'.repeat(11)}${userId.toString(16).padStart(16, '0')}`,
+              HookParameterValue: `01${'00'.repeat(11)}${flipHex(userId.toString(16).padStart(16, '0'))}`,
             },
           },
         ],
@@ -148,20 +149,20 @@ describe('tipbot', () => {
     let hex = ''
     if (socialNetworkId < 0 || socialNetworkId > 255)
       throw new Error('Social Network ID must be between 0 and 255')
-    hex += socialNetworkId.toString(16).padStart(2, '0')
+    hex += flipHex(socialNetworkId.toString(16).padStart(2, '0'))
     if (postId < 0 || postId > 2 ** 64 - 1)
       throw new Error('Post ID must be between 0 and 2**64-1')
-    hex += postId.toString(16).padStart(16, '0')
+    hex += flipHex(postId.toString(16).padStart(16, '0'))
     if (typeof userIdTo === 'string') {
       hex += xrpAddressToHex(userIdTo).toUpperCase()
     } else {
       if (userIdTo < 0n || userIdTo > 2n ** 64n - 1n)
         throw new Error('User ID to must be between 0 and 2**64-1')
-      hex += userIdTo.toString(16).padStart(40, '0')
+      hex += flipHex(userIdTo.toString(16).padStart(40, '0'))
     }
     if (userIdFrom < 0n || userIdFrom > 2n ** 64n - 1n)
       throw new Error('User ID from must be between 0 and 2**64-1')
-    hex += userIdFrom.toString(16).padStart(16, '0')
+    hex += flipHex(userIdFrom.toString(16).padStart(16, '0'))
     if (typeof amount === 'string') {
       hex += '00'.repeat(20)
       hex += '00'.repeat(20)
