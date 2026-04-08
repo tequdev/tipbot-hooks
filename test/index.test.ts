@@ -158,7 +158,8 @@ describe('tipbot', () => {
     } else {
       if (userIdTo < 0n || userIdTo > 2n ** 64n - 1n)
         throw new Error('User ID to must be between 0 and 2**64-1')
-      hex += flipHex(userIdTo.toString(16).padStart(40, '0'))
+      hex += '00'.repeat(12)
+      hex += flipHex(userIdTo.toString(16).padStart(16, '0'))
     }
     if (userIdFrom < 0n || userIdFrom > 2n ** 64n - 1n)
       throw new Error('User ID from must be between 0 and 2**64-1')
@@ -203,7 +204,11 @@ describe('tipbot', () => {
   it('Native Amount', async () => {
     // deposit
     {
-      const response = await deposit(testContext.alice, 1n, xahToDrops('100'))
+      const response = await deposit(
+        testContext.alice,
+        1411317617093234692n,
+        xahToDrops('100'),
+      )
       expect(response.meta).toHaveProperty('HookExecutions')
     }
 
@@ -213,8 +218,8 @@ describe('tipbot', () => {
         {
           socialNetworkId: 1,
           postId: 0n,
-          userIdTo: 0n,
-          userIdFrom: 1n,
+          userIdTo: 1411317617093234693n,
+          userIdFrom: 1411317617093234692n,
           amount: xahToDrops('1'),
         },
       ]
@@ -230,7 +235,7 @@ describe('tipbot', () => {
           socialNetworkId: 1,
           postId: 2n,
           userIdTo: testContext.bob.address,
-          userIdFrom: 1n,
+          userIdFrom: 1411317617093234693n,
           amount: xahToDrops('1'),
         },
       ]
@@ -254,7 +259,7 @@ describe('tipbot', () => {
     {
       const response = await deposit(
         testContext.alice,
-        1n,
+        1411317617093234692n,
         ic.set(100).amount as unknown as Amount,
       )
       expect(response.meta).toHaveProperty('HookExecutions')
@@ -266,8 +271,8 @@ describe('tipbot', () => {
         {
           socialNetworkId: 1,
           postId: 123n,
-          userIdTo: 0n,
-          userIdFrom: 1n,
+          userIdTo: 1411317617093234693n,
+          userIdFrom: 1411317617093234692n,
           amount: ic.set(50).amount as unknown as Amount,
         },
       ]
@@ -283,7 +288,7 @@ describe('tipbot', () => {
           socialNetworkId: 1,
           postId: 456n,
           userIdTo: testContext.bob.address,
-          userIdFrom: 1n,
+          userIdFrom: 1411317617093234692n,
           amount: ic.set(40).amount as unknown as Amount,
         },
       ]
